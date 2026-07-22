@@ -160,22 +160,29 @@
             <section id="profile" class="section" style="display: none;">
                 <h2>My Profile</h2>
                 <div class="profile-card">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="profileName" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="profileEmail" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Registration Number</label>
-                        <input type="text" id="profileRegNo" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label>Course</label>
-                        <input type="text" id="profileCourse" disabled>
-                    </div>
+                        <form id="profileForm">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="profileName" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="profileEmail" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Registration Number</label>
+                            <input type="text" id="profileRegNo" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Course</label>
+                            <input type="text" id="profileCourse" disabled>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="editProfileBtn" class="btn-primary">Edit</button>
+                            <button type="button" id="saveProfileBtn" class="btn-primary" style="display:none">Save</button>
+                            <button type="button" id="cancelProfileBtn" class="btn-secondary" style="display:none">Cancel</button>
+                        </div>
+                        </form>
                 </div>
             </section>
 

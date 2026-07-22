@@ -118,7 +118,24 @@ router.get('/logbooks/:attachment_id', authenticateToken, authorizeRole('student
   }
 });
 
-module.exports = router;
+// Update student profile
+router.put('/profile', authenticateToken, authorizeRole('student'), async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, email, reg_no, course } = req.body;
+
+    const result = await pool.query(
+      `UPDATE users SET name = $1, email = $2, reg_no = $3, course = $4, updated_at = CURRENT_TIMESTAMP
+       WHERE id = $5 RETURNING *`,
+      [name, email, reg_no, course, userId]
+    );
+
+    res.json({ message: 'Profile updated', user: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 // Student report upload endpoint
 router.post('/reports', authenticateToken, authorizeRole('student'), upload.single('report'), async (req, res) => {
@@ -143,3 +160,5 @@ router.post('/reports', authenticateToken, authorizeRole('student'), upload.sing
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+module.exports = router;

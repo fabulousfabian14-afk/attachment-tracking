@@ -16,6 +16,7 @@ function renderDemoStudentData() {
 
     // Keep the latest attachments in memory for view actions
     let studentAttachments = [];
+    let currentStudent = null;
 
         { id: 2, week_number: 'Week 2', activities: 'Built API test scripts and documented issues', status: 'pending', submitted_date: '2026-07-15' }
     ];
@@ -160,7 +161,9 @@ document.getElementById('reportForm')?.addEventListener('submit', async (e) => {
                         document.getElementById('activeAttachments').textContent = data.attachments.length;
                         document.getElementById('logbookCount').textContent = data.logbookCount;
                         document.getElementById('pendingCount').textContent = data.pendingLogbooks;
-                        studentAttachments = data.attachments || [];
+                            studentAttachments = data.attachments || [];
+                            currentStudent = data.student || null;
+                            populateProfileFields(currentStudent);
                         loadAttachments(studentAttachments);
 
                         // Populate profile fields
@@ -183,6 +186,74 @@ document.getElementById('reportForm')?.addEventListener('submit', async (e) => {
                     renderDemoStudentData();
                 }
             }
+
+            function populateProfileFields(student) {
+                if (!student) return;
+                document.getElementById('profileName').value = student.name || '';
+                document.getElementById('profileEmail').value = student.email || '';
+                document.getElementById('profileRegNo').value = student.reg_no || '';
+                document.getElementById('profileCourse').value = student.course || '';
+            }
+
+            // Profile edit handlers
+            document.getElementById('editProfileBtn')?.addEventListener('click', (e) => {
+                document.getElementById('profileName').disabled = false;
+                document.getElementById('profileEmail').disabled = false;
+                document.getElementById('profileRegNo').disabled = false;
+                document.getElementById('profileCourse').disabled = false;
+                document.getElementById('editProfileBtn').style.display = 'none';
+                document.getElementById('saveProfileBtn').style.display = 'inline-block';
+                document.getElementById('cancelProfileBtn').style.display = 'inline-block';
+            });
+
+            document.getElementById('cancelProfileBtn')?.addEventListener('click', (e) => {
+                // revert to currentStudent
+                populateProfileFields(currentStudent);
+                document.getElementById('profileName').disabled = true;
+                document.getElementById('profileEmail').disabled = true;
+                document.getElementById('profileRegNo').disabled = true;
+                document.getElementById('profileCourse').disabled = true;
+                document.getElementById('editProfileBtn').style.display = 'inline-block';
+                document.getElementById('saveProfileBtn').style.display = 'none';
+                document.getElementById('cancelProfileBtn').style.display = 'none';
+            });
+
+            document.getElementById('saveProfileBtn')?.addEventListener('click', async (e) => {
+                const name = document.getElementById('profileName').value;
+                const email = document.getElementById('profileEmail').value;
+                const reg_no = document.getElementById('profileRegNo').value;
+                const course = document.getElementById('profileCourse').value;
+
+                try {
+                    const response = await fetch(`${API_URL}/students/profile`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${getToken()}`
+                        },
+                        body: JSON.stringify({ name, email, reg_no, course })
+                    });
+
+                    if (response.ok) {
+                        const res = await response.json();
+                        currentStudent = res.user;
+                        populateProfileFields(currentStudent);
+                        showNotification('Profile updated!', 'success');
+                        // disable fields
+                        document.getElementById('profileName').disabled = true;
+                        document.getElementById('profileEmail').disabled = true;
+                        document.getElementById('profileRegNo').disabled = true;
+                        document.getElementById('profileCourse').disabled = true;
+                        document.getElementById('editProfileBtn').style.display = 'inline-block';
+                        document.getElementById('saveProfileBtn').style.display = 'none';
+                        document.getElementById('cancelProfileBtn').style.display = 'none';
+                    } else {
+                        showNotification('Failed to update profile', 'error');
+                    }
+                } catch (err) {
+                    showNotification('Error updating profile', 'error');
+                }
+            });
 
             // Handle report upload
             document.getElementById('reportForm')?.addEventListener('submit', async (e) => {
