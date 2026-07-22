@@ -105,13 +105,13 @@ document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '../../index.html';
+    window.location.href = '/index.html';
 }
 
 // Check authentication
 function checkAuth() {
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = '../../index.html';
+        window.location.href = '/index.html';
     }
 }

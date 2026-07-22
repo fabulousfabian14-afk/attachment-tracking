@@ -34,7 +34,7 @@ document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
             localStorage.setItem('user', JSON.stringify(data.user));
             showNotification('Account created successfully!', 'success');
             setTimeout(() => {
-                window.location.href = 'pages/student-dashboard.html';
+                window.location.href = '/pages/student-dashboard.html';
             }, 1500);
         } else {
             showNotification(data.error || 'Signup failed', 'error');
