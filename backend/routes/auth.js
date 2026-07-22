@@ -42,6 +42,18 @@ router.post('/signup', async (req, res) => {
     });
   } catch (err) {
     console.error(err);
+    // Handle duplicate key (unique constraint) errors gracefully
+    if (err && err.code === '23505') {
+      const detail = err.detail || '';
+      if (detail.includes('(reg_no)')) {
+        return res.status(400).json({ error: 'Registration number already registered' });
+      }
+      if (detail.includes('(email)')) {
+        return res.status(400).json({ error: 'Email already registered' });
+      }
+      return res.status(400).json({ error: 'Duplicate value' });
+    }
+
     res.status(500).json({ error: 'Server error' });
   }
 });
