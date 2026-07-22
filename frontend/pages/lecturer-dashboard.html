@@ -192,5 +192,12 @@
 
     <script src="../js/dashboard.js"></script>
     <script src="../js/lecturer.js"></script>
+    <script>
+        // Grade button will open modal
+        function gradeStudent(attachmentId) {
+            sessionStorage.setItem('gradeAttachmentId', attachmentId);
+            showModal('gradeModal');
+        }
+    </script>
 </body>
 </html>

@@ -54,6 +54,20 @@ async function loadStudentDashboard() {
             document.getElementById('logbookCount').textContent = data.logbookCount;
             document.getElementById('pendingCount').textContent = data.pendingLogbooks;
             loadAttachments(data.attachments);
+
+            // Populate profile fields
+            if (data.student) {
+                document.getElementById('profileName').value = data.student.name || '';
+                document.getElementById('profileEmail').value = data.student.email || '';
+                document.getElementById('profileRegNo').value = data.student.reg_no || '';
+                document.getElementById('profileCourse').value = data.student.course || '';
+            }
+
+            // Populate report attachment select
+            const reportSelect = document.getElementById('reportAttachmentId');
+            if (reportSelect) {
+                reportSelect.innerHTML = '<option value="">Select Attachment</option>' + data.attachments.map(a => `<option value="${a.id}">${a.company_name || 'N/A'} (${a.start_date} - ${a.end_date})</option>`).join('');
+            }
         } else {
             renderDemoStudentData();
         }
@@ -61,6 +75,41 @@ async function loadStudentDashboard() {
         renderDemoStudentData();
     }
 }
+
+// Handle report upload
+document.getElementById('reportForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const attachment_id = document.getElementById('reportAttachmentId').value;
+    const fileInput = document.getElementById('reportFile');
+    if (!attachment_id || !fileInput.files.length) {
+        showNotification('Select attachment and file', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('attachment_id', attachment_id);
+    formData.append('report', fileInput.files[0]);
+
+    try {
+        const response = await fetch(`${API_URL}/students/reports`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${getToken()}` },
+            body: formData
+        });
+
+        if (response.ok) {
+            showNotification('Report uploaded!', 'success');
+            closeModal('reportModal');
+            e.target.reset();
+            loadStudentDashboard();
+        } else {
+            showNotification('Failed to upload report', 'error');
+        }
+    } catch (err) {
+        showNotification('Error uploading report', 'error');
+    }
+});
 
 async function loadAttachments(attachments) {
     const table = document.getElementById('attachmentsTable');

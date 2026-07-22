@@ -182,5 +182,12 @@
 
     <script src="../js/dashboard.js"></script>
     <script src="../js/supervisor.js"></script>
+    <script>
+        // Open review modal bridge for inline handlers
+        function openReviewModal(attachmentId) {
+            sessionStorage.setItem('reviewAttachmentId', attachmentId);
+            showModal('logbookReviewModal');
+        }
+    </script>
 </body>
 </html>

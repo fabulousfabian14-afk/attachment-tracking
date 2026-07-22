@@ -4,6 +4,11 @@ const { authenticateToken, authorizeRole } = require('../middleware/auth');
 
 const router = express.Router();
 
+// File upload for reports
+const multer = require('multer');
+const path = require('path');
+const upload = multer({ dest: path.join(__dirname, '..', 'uploads') });
+
 // Get student dashboard
 router.get('/dashboard', authenticateToken, authorizeRole('student'), async (req, res) => {
   try {
@@ -114,3 +119,27 @@ router.get('/logbooks/:attachment_id', authenticateToken, authorizeRole('student
 });
 
 module.exports = router;
+
+// Student report upload endpoint
+router.post('/reports', authenticateToken, authorizeRole('student'), upload.single('report'), async (req, res) => {
+  try {
+    const { attachment_id } = req.body;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const filePath = `/uploads/${path.basename(file.path)}`;
+
+    await pool.query(
+      'INSERT INTO reports (attachment_id, file_path, status) VALUES ($1, $2, $3)',
+      [attachment_id, filePath, 'submitted']
+    );
+
+    res.status(201).json({ message: 'Report uploaded', file: filePath });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});

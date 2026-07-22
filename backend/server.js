@@ -32,6 +32,14 @@ app.get('/api/health', (req, res) => {
 const frontendPath = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendPath));
 
+// Ensure uploads directory exists and serve uploaded files
+const fs = require('fs');
+const uploadsPath = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath);
+}
+app.use('/uploads', express.static(uploadsPath));
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });

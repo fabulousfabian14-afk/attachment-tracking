@@ -135,6 +135,27 @@
                 </table>
             </section>
 
+            <!-- Report Upload Modal -->
+            <div id="reportModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('reportModal')">&times;</span>
+                    <h2>Upload Final Report</h2>
+                    <form id="reportForm">
+                        <div class="form-group">
+                            <label>Attachment</label>
+                            <select id="reportAttachmentId" required>
+                                <option value="">Select Attachment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Report File (PDF)</label>
+                            <input type="file" id="reportFile" accept="application/pdf" required />
+                        </div>
+                        <button type="submit" class="btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+
             <!-- Profile Section -->
             <section id="profile" class="section" style="display: none;">
                 <h2>My Profile</h2>
@@ -232,5 +253,10 @@
 
     <script src="../js/dashboard.js"></script>
     <script src="../js/student.js"></script>
+    <script>
+        // Expose report modal functions globally
+        function showModal(id){ document.getElementById(id).classList.add('show'); }
+        function closeModal(id){ document.getElementById(id).classList.remove('show'); }
+    </script>
 </body>
 </html>

@@ -20,7 +20,7 @@ function renderDemoSupervisorData() {
                 <td>Week 2</td>
                 <td>2026-07-16</td>
                 <td><span class="badge pending">pending</span></td>
-                <td><button class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Review</button></td>
+                <td><button onclick="openReviewModal(1)" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Review</button></td>
             </tr>
         `;
     }
@@ -74,11 +74,16 @@ function loadStudentsTable(students) {
             <td>${student.course}</td>
             <td><span class="badge ${student.status}">${student.status}</span></td>
             <td>
-                <button onclick="reviewStudent(${student.attachment_id})" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Review</button>
+                <button onclick="openReviewModal(${student.attachment_id})" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Review</button>
             </td>
         `;
         table.appendChild(row);
     });
+}
+
+function openReviewModal(attachmentId) {
+    sessionStorage.setItem('reviewAttachmentId', attachmentId);
+    showModal('logbookReviewModal');
 }
 
 // Handle evaluation submission

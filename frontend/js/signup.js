@@ -14,6 +14,7 @@ document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
     }
 
     try {
+        const role = document.getElementById('role').value || 'student';
         const response = await fetch(`/api/auth/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -21,7 +22,7 @@ document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
                 email,
                 password,
                 name,
-                role: 'student',
+                role,
                 reg_no,
                 course
             })
