@@ -1,0 +1,19 @@
+# Render service definition for uniattach-backend
+services:
+  - type: web
+    name: uniattach-backend
+    env: node
+    branch: main
+    plan: free
+    root: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        value: "postgresql://attachment_db_qv97_user:p5H8USDFh6o8wVUCV1ud35duuBKHyP0o@dpg-d9b2v3pkh4rs73cckj40-a.ohio-postgres.render.com/attachment_db_qv97"
+      - key: JWT_SECRET
+        value: "hexagon6-129"
+      - key: NODE_ENV
+        value: production
