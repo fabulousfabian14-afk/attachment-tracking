@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniAttach - University Attachment Tracking System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="logo">🎓</div>
+                <h1>UniAttach</h1>
+                <p class="subtitle">University of Kabianga — Attachment System</p>
+            </div>
+
+            <div class="role-selection">
+                <label>Sign in as</label>
+                <div class="role-buttons">
+                    <button class="role-btn active" data-role="student">👩‍🎓 Student</button>
+                    <button class="role-btn" data-role="supervisor">🏢 Supervisor</button>
+                    <button class="role-btn" data-role="lecturer">👨‍🏫 Lecturer</button>
+                    <button class="role-btn" data-role="admin">⚙️ Admin</button>
+                </div>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email / Registration No.</label>
+                    <input type="text" id="email" placeholder="e.g. UoK/CS/2021/001" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-signin">Sign In</button>
+
+                <p class="demo-text">Demo: Use test credentials or click any role above then Sign In</p>
+            </form>
+
+            <div class="divider">
+                <span>Don't have an account?</span>
+            </div>
+
+            <button class="btn-signup" onclick="window.location.href='signup.html'">Create an Account</button>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

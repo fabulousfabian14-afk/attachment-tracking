@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - UniAttach</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <h2 class="navbar-brand">🎓 UniAttach - Student Portal</h2>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="active">Dashboard</a></li>
+                <li><a href="#attachments">My Attachments</a></li>
+                <li><a href="#logbooks">Logbooks</a></li>
+                <li><a href="#evaluations">Evaluations</a></li>
+                <li><a href="#reports">Reports</a></li>
+                <li><a href="#profile">Profile</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-info">
+                            <h3>Active Attachments</h3>
+                            <p id="activeAttachments" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-info">
+                            <h3>Logbooks Submitted</h3>
+                            <p id="logbookCount" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-info">
+                            <h3>Pending Approval</h3>
+                            <p id="pendingCount" class="stat-value">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attachments Section -->
+            <section id="attachments" class="section" style="display: none;">
+                <h2>My Attachments</h2>
+                <button class="btn-primary" onclick="showModal('applyModal')">Apply for Attachment</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Location</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attachmentsTable">
+                        <tr><td colspan="6">No attachments yet</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Logbooks Section -->
+            <section id="logbooks" class="section" style="display: none;">
+                <h2>Weekly Logbooks</h2>
+                <button class="btn-primary" onclick="showModal('logbookModal')">Submit Logbook</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Week</th>
+                            <th>Activities</th>
+                            <th>Status</th>
+                            <th>Date Submitted</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logbooksTable">
+                        <tr><td colspan="5">No logbooks submitted</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Evaluations Section -->
+            <section id="evaluations" class="section" style="display: none;">
+                <h2>Evaluations</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Evaluator</th>
+                            <th>Date</th>
+                            <th>Score</th>
+                            <th>Comments</th>
+                            <th>View Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="evaluationsTable">
+                        <tr><td colspan="5">No evaluations yet</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="section" style="display: none;">
+                <h2>Final Reports</h2>
+                <button class="btn-primary" onclick="showModal('reportModal')">Upload Report</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Report Type</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                            <th>Grade</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTable">
+                        <tr><td colspan="5">No reports submitted</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="section" style="display: none;">
+                <h2>My Profile</h2>
+                <div class="profile-card">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="profileName" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="profileEmail" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Registration Number</label>
+                        <input type="text" id="profileRegNo" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Course</label>
+                        <input type="text" id="profileCourse" disabled>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Apply Attachment Modal -->
+    <div id="applyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('applyModal')">&times;</span>
+            <h2>Apply for Attachment</h2>
+            <form id="applyForm">
+                <div class="form-group">
+                    <label>Company</label>
+                    <select id="companyId" required>
+                        <option value="">Select Company</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" id="endDate" required>
+                </div>
+                <button type="submit" class="btn-primary">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Logbook Modal -->
+    <div id="logbookModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('logbookModal')">&times;</span>
+            <h2>Submit Weekly Logbook</h2>
+            <form id="logbookForm">
+                <div class="form-group">
+                    <label>Attachment</label>
+                    <select id="attachmentId" required>
+                        <option value="">Select Attachment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Week Number</label>
+                    <input type="number" id="weekNumber" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Activities</label>
+                    <textarea id="activities" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Skills Learned</label>
+                    <textarea id="skillsLearned" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Challenges</label>
+                    <textarea id="challenges" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Mood Rating (1-5)</label>
+                    <select id="moodRating">
+                        <option value="1">😢 Very Poor</option>
+                        <option value="2">😟 Poor</option>
+                        <option value="3">😐 Average</option>
+                        <option value="4">😊 Good</option>
+                        <option value="5">😄 Excellent</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Submit Logbook</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/student.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - UniAttach</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <h2 class="navbar-brand">⚙️ UniAttach - Admin Portal</h2>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="active">Dashboard</a></li>
+                <li><a href="#attachments">Attachments</a></li>
+                <li><a href="#companies">Companies</a></li>
+                <li><a href="#users">Users</a></li>
+                <li><a href="#reports">Reports</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section">
+                <h2>Admin Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3>Total Students</h3>
+                            <p id="totalStudents" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <h3>Placed Students</h3>
+                            <p id="placedStudents" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏢</div>
+                        <div class="stat-info">
+                            <h3>Partner Companies</h3>
+                            <p id="totalCompanies" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏁</div>
+                        <div class="stat-info">
+                            <h3>Completed</h3>
+                            <p id="completedAttachments" class="stat-value">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Attachments Section -->
+            <section id="attachments" class="section" style="display: none;">
+                <h2>Manage Attachments</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Company</th>
+                            <th>Start Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attachmentsTable">
+                        <tr><td colspan="5">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Companies Section -->
+            <section id="companies" class="section" style="display: none;">
+                <h2>Manage Companies</h2>
+                <button class="btn-primary" onclick="showModal('addCompanyModal')">Add Company</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Company Name</th>
+                            <th>Location</th>
+                            <th>Contact Person</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="companiesTable">
+                        <tr><td colspan="5">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users" class="section" style="display: none;">
+                <h2>Manage Users</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Department</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                        <tr><td colspan="5">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="section" style="display: none;">
+                <h2>Reports & Analytics</h2>
+                <div class="reports-section">
+                    <div class="report-card">
+                        <h3>Placement Rate</h3>
+                        <canvas id="placementChart"></canvas>
+                    </div>
+                    <div class="report-card">
+                        <h3>Attachment Status Distribution</h3>
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Company Modal -->
+    <div id="addCompanyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addCompanyModal')">&times;</span>
+            <h2>Add Company</h2>
+            <form id="addCompanyForm">
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input type="text" id="companyName" required>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="companyLocation" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Person</label>
+                    <input type="text" id="companyContact" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Email</label>
+                    <input type="email" id="companyEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Phone</label>
+                    <input type="tel" id="companyPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Industry</label>
+                    <input type="text" id="companyIndustry">
+                </div>
+                <button type="submit" class="btn-primary">Add Company</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Panel - UniAttach</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <h2 class="navbar-brand">🏢 UniAttach - Supervisor Portal</h2>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="active">Dashboard</a></li>
+                <li><a href="#students">My Students</a></li>
+                <li><a href="#logbooks">Logbook Approvals</a></li>
+                <li><a href="#evaluations">Evaluations</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👨‍💼</div>
+                        <div class="stat-info">
+                            <h3>Assigned Students</h3>
+                            <p id="assignedStudents" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-info">
+                            <h3>Pending Logbooks</h3>
+                            <p id="pendingLogbooks" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3>Evaluations Done</h3>
+                            <p id="evaluationsDone" class="stat-value">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Students Section -->
+            <section id="students" class="section" style="display: none;">
+                <h2>Assigned Students</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Course</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTable">
+                        <tr><td colspan="5">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Logbooks Section -->
+            <section id="logbooks" class="section" style="display: none;">
+                <h2>Logbook Entries - Pending Approval</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Week</th>
+                            <th>Submitted Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logbooksTable">
+                        <tr><td colspan="5">No pending logbooks</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Evaluations Section -->
+            <section id="evaluations" class="section" style="display: none;">
+                <h2>Student Evaluations</h2>
+                <button class="btn-primary" onclick="showModal('evaluationModal')">Add Evaluation</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Date</th>
+                            <th>Score</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="evaluationsTable">
+                        <tr><td colspan="5">No evaluations yet</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- Logbook Review Modal -->
+    <div id="logbookReviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('logbookReviewModal')">&times;</span>
+            <h2>Review Logbook Entry</h2>
+            <div id="logbookDetails"></div>
+            <form id="logbookReviewForm">
+                <div class="form-group">
+                    <label>Comments</label>
+                    <textarea id="logbookComments" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Decision</label>
+                    <select id="logbookDecision" required>
+                        <option value="">Select Action</option>
+                        <option value="approved">Approve</option>
+                        <option value="rejected">Reject</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Evaluation Modal -->
+    <div id="evaluationModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('evaluationModal')">&times;</span>
+            <h2>Evaluate Student Performance</h2>
+            <form id="evaluationForm">
+                <div class="form-group">
+                    <label>Student</label>
+                    <select id="studentId" required>
+                        <option value="">Select Student</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Professionalism (1-10)</label>
+                    <input type="number" id="professionalism" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label>Technical Skills (1-10)</label>
+                    <input type="number" id="technicalSkills" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label>Communication (1-10)</label>
+                    <input type="number" id="communication" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label>Punctuality (1-10)</label>
+                    <input type="number" id="punctuality" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label>Teamwork (1-10)</label>
+                    <input type="number" id="teamwork" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label>Comments</label>
+                    <textarea id="evalComments" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Submit Evaluation</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/supervisor.js"></script>
+</body>
+</html>

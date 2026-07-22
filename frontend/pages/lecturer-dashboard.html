@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Dashboard - UniAttach</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <h2 class="navbar-brand">👨‍🏫 UniAttach - Lecturer Dashboard</h2>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="active">Dashboard</a></li>
+                <li><a href="#students">My Students</a></li>
+                <li><a href="#visits">Schedule Visits</a></li>
+                <li><a href="#grading">Grade Students</a></li>
+                <li><a href="#analytics">Analytics</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3>Total Students</h3>
+                            <p id="totalStudents" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-info">
+                            <h3>Placed Students</h3>
+                            <p id="placedStudents" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-info">
+                            <h3>Unplaced Students</h3>
+                            <p id="unplacedStudents" class="stat-value">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3>Average Score</h3>
+                            <p id="averageScore" class="stat-value">0.0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Students Section -->
+            <section id="students" class="section" style="display: none;">
+                <h2>My Students</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Course</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTable">
+                        <tr><td colspan="5">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Visits Section -->
+            <section id="visits" class="section" style="display: none;">
+                <h2>Schedule Visits</h2>
+                <button class="btn-primary" onclick="showModal('scheduleVisitModal')">Schedule Visit</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Company</th>
+                            <th>Scheduled Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="visitsTable">
+                        <tr><td colspan="5">No visits scheduled</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Grading Section -->
+            <section id="grading" class="section" style="display: none;">
+                <h2>Grade Students</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Company</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Grade</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gradingTable">
+                        <tr><td colspan="6">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="section" style="display: none;">
+                <h2>Analytics</h2>
+                <div class="analytics-grid">
+                    <div class="chart-container">
+                        <h3>Student Performance</h3>
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Placement by Company</h3>
+                        <canvas id="companyChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Schedule Visit Modal -->
+    <div id="scheduleVisitModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('scheduleVisitModal')">&times;</span>
+            <h2>Schedule Workplace Visit</h2>
+            <form id="scheduleVisitForm">
+                <div class="form-group">
+                    <label>Student</label>
+                    <select id="studentId" required>
+                        <option value="">Select Student</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Visit Date & Time</label>
+                    <input type="datetime-local" id="visitDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Observations</label>
+                    <textarea id="observations" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Schedule Visit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Grade Modal -->
+    <div id="gradeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('gradeModal')">&times;</span>
+            <h2>Grade Student Attachment</h2>
+            <form id="gradeForm">
+                <div class="form-group">
+                    <label>Grade (A-F)</label>
+                    <select id="grade" required>
+                        <option value="">Select Grade</option>
+                        <option value="A">A (90-100)</option>
+                        <option value="B">B (80-89)</option>
+                        <option value="C">C (70-79)</option>
+                        <option value="D">D (60-69)</option>
+                        <option value="F">F (Below 60)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Feedback</label>
+                    <textarea id="gradeFeedback" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Submit Grade</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/lecturer.js"></script>
+</body>
+</html>
