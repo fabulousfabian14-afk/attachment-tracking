@@ -1,6 +1,10 @@
 // Lecturer specific functions
 document.addEventListener('DOMContentLoaded', loadLecturerDashboard);
 
+// store data for view/edit actions
+let lecturerStudents = [];
+let lecturerVisits = [];
+
 function renderDemoLecturerData() {
     document.getElementById('totalStudents').textContent = '18';
     document.getElementById('placedStudents').textContent = '15';
@@ -21,9 +25,10 @@ function renderDemoLecturerData() {
                 <td>Safaricom PLC</td>
                 <td>2026-07-25 10:00</td>
                 <td><span class="badge approved">scheduled</span></td>
-                <td><button class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
+                <td><button onclick="editVisit(1)" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
             </tr>
         `;
+        lecturerVisits = [ { id: 1, student: 'Amina Njeri', company: 'Safaricom PLC', visit_date: '2026-07-25T10:00', observations: '', status: 'scheduled' } ];
     }
 
     const gradingTable = document.getElementById('gradingTable');
@@ -35,7 +40,7 @@ function renderDemoLecturerData() {
                 <td>2026-07-30</td>
                 <td><span class="badge completed">completed</span></td>
                 <td>A</td>
-                <td><button class="btn-primary" style="padding: 6px 12px; font-size: 12px;">View</button></td>
+                <td><button onclick="viewAttachment(2)" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">View</button></td>
             </tr>
         `;
     }
@@ -67,6 +72,7 @@ async function loadLecturerDashboard() {
 
         if (response.ok) {
             const students = await response.json();
+            lecturerStudents = students;
             loadStudentsForGrading(students);
         } else {
             renderDemoLecturerData();
@@ -74,6 +80,44 @@ async function loadLecturerDashboard() {
     } catch (err) {
         renderDemoLecturerData();
     }
+}
+
+// Edit an existing visit: populate modal and open it
+function editVisit(visitId) {
+    const v = lecturerVisits.find(x => x.id === visitId);
+    if (!v) return showNotification('Visit not found', 'error');
+
+    // populate fields
+    document.getElementById('studentId').value = v.attachment_id || '';
+    document.getElementById('visitDate').value = v.visit_date || '';
+    document.getElementById('observations').value = v.observations || '';
+
+    showModal('scheduleVisitModal');
+}
+
+// View attachment details (reuse student modal if present)
+function viewAttachment(id) {
+    // try to reuse global studentAttachments if available
+    let att = null;
+    if (window.studentAttachments) att = window.studentAttachments.find(a => a.id === id);
+    if (!att && lecturerStudents.length) {
+        att = lecturerStudents.find(s => s.attachment_id === id) || null;
+        if (att) {
+            att = { id, company_name: att.company_name || att.company, location: att.location || '', start_date: att.start_date || '', end_date: att.end_date || '', status: att.status || '' };
+        }
+    }
+
+    if (!att) return showNotification('Attachment not found', 'error');
+
+    const modal = document.getElementById('attachmentViewModal');
+    if (!modal) return alert(`Attachment: ${att.company_name} (${att.start_date} - ${att.end_date})`);
+
+    modal.querySelector('.company').textContent = att.company_name || 'N/A';
+    modal.querySelector('.location').textContent = att.location || 'N/A';
+    modal.querySelector('.dates').textContent = `${att.start_date} - ${att.end_date}`;
+    modal.querySelector('.status').textContent = att.status || 'N/A';
+
+    showModal('attachmentViewModal');
 }
 
 function loadStudentsForGrading(students) {
