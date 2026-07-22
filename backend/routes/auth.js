@@ -8,7 +8,7 @@ const router = express.Router();
 // Sign up
 router.post('/signup', async (req, res) => {
   try {
-    const { email, password, name, role, reg_no } = req.body;
+    const { email, password, name, role, reg_no, course } = req.body;
 
     if (!email || !password || !name || !role) {
       return res.status(400).json({ error: 'Missing required fields' });
@@ -25,8 +25,8 @@ router.post('/signup', async (req, res) => {
 
     // Create user
     const result = await pool.query(
-      'INSERT INTO users (email, password, name, role, reg_no) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, name, role',
-      [email, hashedPassword, name, role, reg_no]
+      'INSERT INTO users (email, password, name, role, reg_no, course) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, email, name, role, reg_no, course',
+      [email, hashedPassword, name, role, reg_no, course]
     );
 
     const token = jwt.sign(

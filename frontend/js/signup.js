@@ -35,8 +35,21 @@ document.getElementById('signupForm')?.addEventListener('submit', async (e) => {
             localStorage.setItem('user', JSON.stringify(data.user));
             showNotification('Account created successfully!', 'success');
             setTimeout(() => {
-                window.location.href = '/pages/student-dashboard.html';
-            }, 1500);
+                const dest = (data.user && data.user.role) ? data.user.role : role;
+                switch (dest) {
+                    case 'supervisor':
+                        window.location.href = '/pages/supervisor-portal.html';
+                        break;
+                    case 'lecturer':
+                        window.location.href = '/pages/lecturer-dashboard.html';
+                        break;
+                    case 'admin':
+                        window.location.href = '/pages/admin-portal.html';
+                        break;
+                    default:
+                        window.location.href = '/pages/student-dashboard.html';
+                }
+            }, 800);
         } else {
             showNotification(data.error || 'Signup failed', 'error');
         }
