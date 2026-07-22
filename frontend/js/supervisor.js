@@ -1,6 +1,9 @@
 // Supervisor specific functions
 document.addEventListener('DOMContentLoaded', loadSupervisorDashboard);
 
+// Keep evaluations in memory for view action
+let supervisorEvaluations = [];
+
 function renderDemoSupervisorData() {
     document.getElementById('assignedStudents').textContent = '3';
     document.getElementById('pendingLogbooks').textContent = '1';
@@ -27,16 +30,47 @@ function renderDemoSupervisorData() {
 
     const evaluationsTable = document.getElementById('evaluationsTable');
     if (evaluationsTable) {
-        evaluationsTable.innerHTML = `
-            <tr>
-                <td>Amina Njeri</td>
-                <td>2026-07-20</td>
-                <td>8.8/10</td>
-                <td><span class="badge approved">completed</span></td>
-                <td><button class="btn-primary" style="padding: 6px 12px; font-size: 12px;">View</button></td>
-            </tr>
-        `;
+        supervisorEvaluations = [
+            { id: 1, student: 'Amina Njeri', date: '2026-07-20', score: 8.8, professionalism: 9, technical_skills: 8, communication: 9, punctuality: 8, teamwork: 9, comments: 'Great progress', status: 'completed' }
+        ];
+        loadEvaluations(supervisorEvaluations);
     }
+}
+
+function loadEvaluations(evals) {
+    const table = document.getElementById('evaluationsTable');
+    table.innerHTML = '';
+    if (!evals || evals.length === 0) {
+        table.innerHTML = '<tr><td colspan="5">No evaluations yet</td></tr>';
+        return;
+    }
+
+    evals.forEach(ev => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${ev.student}</td>
+            <td>${ev.date}</td>
+            <td>${ev.score}/10</td>
+            <td><span class="badge ${ev.status}">${ev.status}</span></td>
+            <td><button onclick="viewEvaluation(${ev.id})" class="btn-primary" style="padding: 6px 12px; font-size: 12px;">View</button></td>
+        `;
+        table.appendChild(row);
+    });
+}
+
+function viewEvaluation(id) {
+    const ev = supervisorEvaluations.find(e => e.id === id);
+    if (!ev) return showNotification('Evaluation not found', 'error');
+
+    const modal = document.getElementById('evaluationViewModal');
+    if (!modal) return alert(`${ev.student} - ${ev.score}`);
+
+    modal.querySelector('.eval-student').textContent = ev.student;
+    modal.querySelector('.eval-score').textContent = `${ev.score}/10`;
+    modal.querySelector('.eval-breakdown').textContent = `Professionalism: ${ev.professionalism}, Technical: ${ev.technical_skills}, Communication: ${ev.communication}, Punctuality: ${ev.punctuality}, Teamwork: ${ev.teamwork}`;
+    modal.querySelector('.eval-comments').textContent = ev.comments || '';
+
+    showModal('evaluationViewModal');
 }
 
 async function loadSupervisorDashboard() {
