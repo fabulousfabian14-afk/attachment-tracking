@@ -45,6 +45,19 @@ document.addEventListener('DOMContentLoaded', function() {
     checkAuth();
     const user = getUser();
     document.querySelector('.navbar-brand').textContent = `${user.name} - ${user.role.charAt(0).toUpperCase() + user.role.slice(1)}`;
+    // If a hash is present in the URL, show that section (e.g., #profile)
+    if (location.hash) {
+        const sectionId = location.hash.replace('#', '');
+        const targetLink = Array.from(document.querySelectorAll('.sidebar-menu a')).find(a => a.getAttribute('href') === `#${sectionId}`);
+        if (targetLink) {
+            targetLink.click();
+        } else {
+            // Fallback: show the section element directly
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            const el = document.getElementById(sectionId);
+            if (el) el.style.display = 'block';
+        }
+    }
 });
 
 function logout() {
