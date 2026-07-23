@@ -12,6 +12,7 @@ async function loadStudentDashboard() {
 
         if (!response.ok) {
             showNotification('Unable to load dashboard, please login again', 'error');
+            populateProfileFields(null);
             return;
         }
 
@@ -29,6 +30,7 @@ async function loadStudentDashboard() {
         populateAttachmentSelect(studentAttachments);
     } catch (err) {
         showNotification('Dashboard load failed', 'error');
+        populateProfileFields(null);
     }
 }
 

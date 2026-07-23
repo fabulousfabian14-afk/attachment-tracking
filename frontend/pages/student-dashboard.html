@@ -178,9 +178,9 @@
                             <input type="text" id="profileCourse" disabled>
                         </div>
                         <div class="form-group">
-                            <button type="button" id="editProfileBtn" class="btn-primary">Edit</button>
-                            <button type="button" id="saveProfileBtn" class="btn-primary" style="display:none">Save</button>
-                            <button type="button" id="cancelProfileBtn" class="btn-secondary" style="display:none">Cancel</button>
+                            <button type="button" id="editProfileBtn" class="btn-primary" onclick="setProfileEditing(true)">Edit</button>
+                            <button type="button" id="saveProfileBtn" class="btn-primary" style="display:none" onclick="saveProfile()">Save</button>
+                            <button type="button" id="cancelProfileBtn" class="btn-secondary" style="display:none" onclick="setProfileEditing(false)">Cancel</button>
                         </div>
                         </form>
                 </div>
