@@ -65,7 +65,8 @@ function initSignup() {
                             window.location.href = '/pages/admin-portal.html';
                             break;
                         default:
-                            window.location.href = '/pages/student-dashboard.html';
+                            // Redirect students directly to the Profile tab
+                            window.location.href = '/pages/student-dashboard.html#profile';
                     }
                 }, 900);
             } else {
