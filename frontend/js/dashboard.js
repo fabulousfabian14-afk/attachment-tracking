@@ -5,7 +5,11 @@ function getToken() {
 }
 
 function getUser() {
-    return JSON.parse(localStorage.getItem('user'));
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch (err) {
+        return null;
+    }
 }
 
 // Dashboard Navigation
@@ -43,7 +47,7 @@ window.addEventListener('click', function(event) {
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();
-    const user = getUser();
+    const user = getUser() || { name: 'Student', role: 'student' };
     document.querySelector('.navbar-brand').textContent = `${user.name} - ${user.role.charAt(0).toUpperCase() + user.role.slice(1)}`;
     // If a hash is present in the URL, show that section (e.g., #profile)
     if (location.hash) {
